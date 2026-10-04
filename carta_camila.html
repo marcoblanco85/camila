@@ -1,0 +1,275 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Para mi hermosa Camila</title>
+    <link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@700&family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            background: linear-gradient(135deg, #ffdde1 0%, #ff9a9e 100%);
+            height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            overflow: hidden;
+            font-family: 'Poppins', sans-serif;
+        }
+
+        #particles {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 0;
+        }
+
+        .heart {
+            position: absolute;
+            background: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="%23d60047"><path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/></svg>') no-repeat center;
+            background-size: contain;
+            animation: floatUp 6s linear infinite;
+            opacity: 0.5;
+        }
+
+        @keyframes floatUp {
+            0% { transform: translateY(100vh) scale(0.6) rotate(-15deg); opacity: 0; }
+            20% { opacity: 0.7; }
+            80% { opacity: 0.7; }
+            100% { transform: translateY(-10vh) scale(1.5) rotate(15deg); opacity: 0; }
+        }
+
+        .container {
+            position: relative;
+            width: 340px;
+            height: 240px;
+            margin-top: 180px;
+            cursor: pointer;
+            z-index: 10;
+            animation: float 3s ease-in-out infinite;
+        }
+
+        @keyframes float {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-10px); }
+        }
+
+        .container.open {
+            animation: none;
+        }
+
+        .envelope-back {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            background: #e63956;
+            border-radius: 12px;
+            box-shadow: 0 15px 40px rgba(230, 57, 86, 0.4);
+            z-index: 1;
+        }
+
+        .letter {
+            position: absolute;
+            top: 10px;
+            left: 10px;
+            width: 320px;
+            height: 220px; /* Tamaño corto inicial para que quede escondida en el sobre */
+            background: #fff;
+            border-radius: 10px;
+            z-index: 2;
+            /* La animación ahora hace que la carta crezca de tamaño hacia arriba suavemente */
+            transition: transform 0.8s cubic-bezier(0.4, 0, 0.2, 1) 0.3s,
+                        height 0.8s cubic-bezier(0.4, 0, 0.2, 1) 0.3s;
+            overflow: hidden;
+            border: 2px solid #ffe3e7;
+            box-shadow: 0 5px 25px rgba(0,0,0,0.1);
+        }
+
+        .letter-content {
+            padding: 30px 25px;
+            width: 100%;
+            height: 560px; /* Mucho espacio para que ninguna palabra quede por fuera */
+            box-sizing: border-box;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .letter h1 {
+            font-family: 'Dancing Script', cursive;
+            color: #d60047;
+            margin: 0 0 10px 0;
+            font-size: 38px;
+            text-align: center;
+            line-height: 1.1;
+        }
+        
+        .phrase {
+            font-style: italic;
+            color: #ff4d6d;
+            font-weight: 600;
+            text-align: center;
+            font-size: 14px;
+            margin: 5px 0 15px 0;
+            padding: 0 10px;
+        }
+
+        .letter p.body-text {
+            font-size: 13.5px;
+            color: #4a4a4a;
+            line-height: 1.6;
+            margin: 0;
+            text-align: justify;
+        }
+
+        .letter strong {
+            color: #d60047;
+            font-weight: 600;
+        }
+
+        .flap {
+            position: absolute;
+            top: 0;
+            left: 0;
+            border-left: 170px solid transparent;
+            border-right: 170px solid transparent;
+            border-top: 140px solid #ff5c77;
+            transform-origin: top;
+            transition: transform 0.6s ease-in-out, z-index 0s 0.3s;
+            z-index: 4;
+            filter: drop-shadow(0 3px 3px rgba(0,0,0,0.1));
+        }
+
+        .body-front {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 3;
+            overflow: hidden;
+            border-radius: 12px;
+        }
+
+        .body-front::before {
+            content: '';
+            position: absolute;
+            top: 0; left: 0;
+            border-top: 120px solid transparent;
+            border-bottom: 120px solid transparent;
+            border-left: 170px solid #ff4262;
+        }
+
+        .body-front::after {
+            content: '';
+            position: absolute;
+            top: 0; right: 0;
+            border-top: 120px solid transparent;
+            border-bottom: 120px solid transparent;
+            border-right: 170px solid #ff4262;
+        }
+
+        .body-bottom {
+            position: absolute;
+            bottom: 0; left: 0;
+            border-left: 170px solid transparent;
+            border-right: 170px solid transparent;
+            border-bottom: 120px solid #e02f4d;
+            z-index: 4;
+        }
+
+        .instruction {
+            position: absolute;
+            top: -50px;
+            left: 50%;
+            transform: translateX(-50%);
+            color: #d60047;
+            font-size: 15px;
+            font-weight: 600;
+            background: rgba(255, 255, 255, 0.7);
+            padding: 8px 20px;
+            border-radius: 20px;
+            backdrop-filter: blur(5px);
+            white-space: nowrap;
+            animation: pulse 1.5s infinite;
+            z-index: 5;
+            box-shadow: 0 4px 10px rgba(255, 77, 109, 0.2);
+        }
+
+        @keyframes pulse {
+            0% { transform: translateX(-50%) scale(1); opacity: 0.9;}
+            50% { transform: translateX(-50%) scale(1.05); opacity: 1;}
+            100% { transform: translateX(-50%) scale(1); opacity: 0.9;}
+        }
+
+        /* Open State Styles - La carta crece y sube simultáneamente */
+        .container.open .flap {
+            transform: rotateX(180deg);
+            z-index: 1;
+        }
+
+        .container.open .letter {
+            height: 560px; /* Se despliega completamente */
+            transform: translateY(-370px); /* Sube lo suficiente para leerse entera */
+            z-index: 5;
+        }
+        
+        .container.open .instruction {
+            opacity: 0;
+            transition: opacity 0.3s;
+        }
+    </style>
+</head>
+<body>
+    <div id="particles"></div>
+
+    <div class="container" onclick="this.classList.toggle('open')">
+        <div class="instruction">Toca el sobre, mi amor ✨</div>
+        <div class="envelope-back"></div>
+        <div class="letter">
+            <div class="letter-content">
+                <h1>Para mi hermosa Camila</h1>
+                <p class="phrase">"Eres la casualidad más bonita que llegó a mi vida."</p>
+                <p class="body-text">
+                    ¡Feliz cumpleaños, mi niña hermosa! Sé que tu día fue ayer, <strong>3 de octubre</strong>, pero mi amor por ti es tan inmenso que merece ser celebrado todos los días.<br><br>
+                    Quería darte este detalle para recordarte lo muchísimo que significas para mí. Me haces inmensamente feliz, me encanta tu sonrisa y no hay un solo instante en el que no estés en mi mente.<br><br>
+                    Gracias por existir y por hacer que mi mundo sea más bonito. Quiero que sepas que <strong>TE AMO</strong> con todo mi corazón y que eres lo mejor que me ha pasado.<br><br>
+                    <span style="display: block; text-align: center; margin-top: 15px; font-family: 'Dancing Script', cursive; font-size: 28px; color: #d60047;">Siempre tuyo ❤️</span>
+                </p>
+            </div>
+        </div>
+        <div class="body-front"></div>
+        <div class="body-bottom"></div>
+        <div class="flap"></div>
+    </div>
+
+    <script>
+        function createParticle() {
+            const heart = document.createElement('div');
+            heart.classList.add('heart');
+            heart.style.left = Math.random() * 100 + 'vw';
+            
+            const size = Math.random() * 20 + 15;
+            heart.style.width = size + 'px';
+            heart.style.height = size + 'px';
+            
+            heart.style.animationDuration = (Math.random() * 3 + 4) + 's';
+            
+            document.getElementById('particles').appendChild(heart);
+            
+            setTimeout(() => { 
+                heart.remove(); 
+            }, 7000);
+        }
+
+        for(let i=0; i<15; i++) {
+            setTimeout(createParticle, Math.random() * 2000);
+        }
+        setInterval(createParticle, 400);
+    </script>
+</body>
+</html>
